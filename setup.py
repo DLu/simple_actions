@@ -14,6 +14,6 @@ setup(
     zip_safe=True,
     maintainer='David V. Lu!!',
     maintainer_email='davidvlu@gmail.com',
-    description='Library for easier use of rclpy actions',
+    description='Simple library for using the `rclpy/rclcpp` action libraries',
     license='BSD',
 )
