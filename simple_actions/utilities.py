@@ -32,8 +32,8 @@
 
 
 def get_action_name(action_type):
-    """Hacky way to clean up the type string"""
-
+    """Return a cleaned up version of the action type."""
+    # Mildly hacky, but works for now
     class_name_str = str(action_type)  # e.g. <class 'action_tutorials_interfaces.action._fibonacci.Fibonacci'>
     class_name = class_name_str.split("'")[1]  # e.g. action_tutorials_interfaces.action._fibonacci.Fibonacci
     parts = class_name.split('.')

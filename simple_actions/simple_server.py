@@ -52,7 +52,7 @@ class SimpleActionServer:
         self.logger.debug(f'{self} initialized')
 
     def publish_feedback(self, feedback):
-        """Publishes feedback on the active action"""
+        """Publish feedback on the active action."""
         self.goal_handle.publish_feedback(feedback)
         self.logger.debug(f'{self} published feedback')
 

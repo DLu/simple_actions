@@ -105,7 +105,8 @@ public:
   void sendGoal(const typename ACTION_TYPE::Goal& goal_msg, ResultCallback resultCB = nullptr,
                 FeedbackCallback feedbackCB = nullptr)
   {
-    using namespace std::placeholders;
+    using std::placeholders::_1;
+    using std::placeholders::_2;
     typename rclcpp_action::Client<ACTION_TYPE>::SendGoalOptions send_goal_options;
     send_goal_options.goal_response_callback = std::bind(&SimpleActionClient::goalResponseCallback, this, _1);
 
@@ -130,7 +131,8 @@ public:
   typename ACTION_TYPE::Result& execute(const typename ACTION_TYPE::Goal& goal_msg,
                                         FeedbackCallback feedbackCB = nullptr)
   {
-    using namespace std::placeholders;
+    using std::placeholders::_1;
+    using std::placeholders::_2;
     execute_result_recieved_ = false;
     sendGoal(goal_msg, std::bind(&SimpleActionClient::executeResultCallback, this, _1, _2), feedbackCB);
     while (!execute_result_recieved_ && rclcpp::ok())

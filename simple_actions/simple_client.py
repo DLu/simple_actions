@@ -36,7 +36,8 @@ from .utilities import get_action_name
 
 
 class ResultCode(Enum):
-    """Similar to action_msgs/msg/GoalStatus but also contains REJECTED"""
+    """Similar to action_msgs/msg/GoalStatus but also contains REJECTED."""
+
     UNKNOWN = 0
     SUCCEEDED = 1
     CANCELED = 2
@@ -66,7 +67,7 @@ class SimpleActionClient:
         self.logger.debug(f'{self} initialized')
 
     def wait_for_server(self):
-        """Waits indefinitely for the server to come up. Will print a message after 10 seconds."""
+        """Wait indefinitely for the server to come up. Will print a message after 10 seconds."""
         printed = False
         while not self.action_client.wait_for_server(timeout_sec=10.0):
             if not printed:
@@ -96,7 +97,7 @@ class SimpleActionClient:
         return self._result
 
     def _goal_response_callback(self, future):
-        """Internal callback"""
+        # Internal callback
         goal_handle = future.result()
         if not goal_handle.accepted:
             if self.result_callback:
@@ -109,13 +110,13 @@ class SimpleActionClient:
         self._get_result_future.add_done_callback(self._result_callback)
 
     def _feedback_callback(self, feedback_msg):
-        """Internal callback"""
+        # Internal callback
         self.logger.debug(f'{self} got feedback')
         if self.feedback_callback:
             self.feedback_callback(feedback_msg.feedback)
 
     def _result_callback(self, future):
-        """Internal callback"""
+        # Internal callback
         self.logger.debug(f'{self} got result')
         super_result = future.result()
 
