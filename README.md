@@ -87,7 +87,7 @@ if __name__ == '__main__':
 ### Call Operator with Feedback
 You can also specify a feedback callback with the call operator, a la
 ```
-     result = client(goal_msg, feedback_callback=my_awesome_feedback_cb)
+    result = client(goal_msg, feedback_callback=my_awesome_feedback_cb)
 ```
 
 ## Wait For Server

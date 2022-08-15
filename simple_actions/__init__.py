@@ -41,7 +41,7 @@ class SimpleActionClient:
         if not goal_handle.accepted:
             if self.result_callback:
                 self.result_callback(None)
-            self.get_logger().error('Goal rejected :(')
+            self.node.get_logger().error('Goal rejected :(')
             return
 
         self._get_result_future = goal_handle.get_result_async()
