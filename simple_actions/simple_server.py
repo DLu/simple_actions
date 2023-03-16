@@ -57,13 +57,13 @@ class SimpleActionServer:
         self.logger.debug(f'{self} published feedback')
 
     def is_active(self):
-        return self.goal_handle.is_active()
+        return self.goal_handle and self.goal_handle.is_active
 
     def is_cancel_requested(self):
-        return self.goal_handle.is_cancel_requested()
+        return self.goal_handle and self.goal_handle.is_cancel_requested
 
     def is_executing(self):
-        return self.goal_handle.status == GoalStatus.STATUS_EXECUTING
+        return self.goal_handle and self.goal_handle.status == GoalStatus.STATUS_EXECUTING
 
     def _execute_callback(self, goal_handle):
         self.logger.debug(f'{self} is beginning execution')
