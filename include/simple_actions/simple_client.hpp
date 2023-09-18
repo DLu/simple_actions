@@ -67,7 +67,7 @@ public:
     {
       waitForServer();
     }
-    RCLCPP_DEBUG(LOGGER, info_string_ + " initialized");
+    RCLCPP_DEBUG(LOGGER, "%s initialized", info_string_.c_str());
   }
 
   /**
@@ -81,7 +81,7 @@ public:
     {
       if (!printed)
       {
-        RCLCPP_WARN(LOGGER, "Waiting for " + info_string_);
+        RCLCPP_WARN(LOGGER, "Waiting for %s", info_string_.c_str());
         printed = true;
       }
     }
@@ -91,11 +91,11 @@ public:
     }
     if (printed)
     {
-      RCLCPP_INFO(LOGGER, "Connected to " + info_string_);
+      RCLCPP_INFO(LOGGER, "Connected to %s", info_string_.c_str());
     }
     else
     {
-      RCLCPP_DEBUG(LOGGER, info_string_ + " connected");
+      RCLCPP_DEBUG(LOGGER, "%s connected", info_string_.c_str());
     }
   }
 
@@ -120,7 +120,7 @@ public:
     send_goal_options.result_callback = std::bind(&SimpleActionClient::resultCallback, this, _1);
     client_->async_send_goal(goal_msg, send_goal_options);
 
-    RCLCPP_DEBUG(LOGGER, info_string_ + " sent goal");
+    RCLCPP_DEBUG(LOGGER, "%s sent goal", info_string_.c_str());
   }
 
   /**
@@ -152,16 +152,16 @@ protected:
       {
         result_cb_(ResultCode::REJECTED, default_result_);
       }
-      RCLCPP_DEBUG(LOGGER, info_string_ + " goal rejected :(");
+      RCLCPP_DEBUG(LOGGER, "%s goal rejected :(", info_string_.c_str());
       return;
     }
-    RCLCPP_DEBUG(LOGGER, info_string_ + " goal accepted :)");
+    RCLCPP_DEBUG(LOGGER, "%s goal accepted :)", info_string_.c_str());
   }
 
   void feedbackCallback(typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr,
                         const std::shared_ptr<const typename ACTION_TYPE::Feedback> feedback)
   {
-    RCLCPP_DEBUG(LOGGER, info_string_ + " got feedback");
+    RCLCPP_DEBUG(LOGGER, "%s got feedback", info_string_.c_str());
     if (feedback_cb_)
     {
       feedback_cb_(*feedback);
@@ -170,7 +170,7 @@ protected:
 
   void resultCallback(const typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::WrappedResult& result)
   {
-    RCLCPP_DEBUG(LOGGER, info_string_ + " got result");
+    RCLCPP_DEBUG(LOGGER, "%s got result", info_string_.c_str());
     if (result_cb_)
     {
       ResultCode code;

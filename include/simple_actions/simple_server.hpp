@@ -63,7 +63,7 @@ public:
                                                         std::bind(&SimpleActionServer::handleGoal, this, _1, _2),
                                                         std::bind(&SimpleActionServer::handleCancel, this, _1),
                                                         std::bind(&SimpleActionServer::handleAccepted, this, _1));
-    RCLCPP_DEBUG(LOGGER, info_string_ + " initialized");
+    RCLCPP_DEBUG(LOGGER, "%s initialized", info_string_.c_str());
   }
 
   /**
@@ -72,7 +72,7 @@ public:
   void publishFeedback(typename ACTION_TYPE::Feedback::SharedPtr feedback)
   {
     goal_handle_->publish_feedback(feedback);
-    RCLCPP_DEBUG(LOGGER, info_string_ + " published feedback");
+    RCLCPP_DEBUG(LOGGER, "%s published feedback", info_string_.c_str());
   }
 
   bool isActive() const
@@ -96,26 +96,26 @@ protected:
   rclcpp_action::GoalResponse handleGoal(const rclcpp_action::GoalUUID&,
                                          std::shared_ptr<const typename ACTION_TYPE::Goal>)
   {
-    RCLCPP_DEBUG(LOGGER, info_string_ + " got a goal request");
+    RCLCPP_DEBUG(LOGGER, "%s got a goal request", info_string_.c_str());
     return rclcpp_action::GoalResponse::ACCEPT_AND_EXECUTE;
   }
 
   rclcpp_action::CancelResponse handleCancel(const GoalHandle)
   {
-    RCLCPP_DEBUG(LOGGER, info_string_ + " got a cancel request");
+    RCLCPP_DEBUG(LOGGER, "%s got a cancel request", info_string_.c_str());
     return rclcpp_action::CancelResponse::ACCEPT;
   }
 
   void handleAccepted(const GoalHandle goal_handle)
   {
-    RCLCPP_DEBUG(LOGGER, info_string_ + " is starting an execution thread");
+    RCLCPP_DEBUG(LOGGER, "%s is starting an execution thread", info_string_.c_str());
     // this needs to return quickly to avoid blocking the executor, so spin up a new thread
     std::thread{std::bind(&SimpleActionServer::execute, this, std::placeholders::_1), goal_handle}.detach();
   }
 
   void execute(GoalHandle goal_handle)
   {
-    RCLCPP_DEBUG(LOGGER, info_string_ + " is beginning execution");
+    RCLCPP_DEBUG(LOGGER, "%s is beginning execution", info_string_.c_str());
     goal_handle_ = goal_handle;
     const auto goal = goal_handle->get_goal();
     auto result = std::make_shared<typename ACTION_TYPE::Result>();
@@ -144,7 +144,7 @@ protected:
     {
       goal_handle->abort(result);
     }
-    RCLCPP_DEBUG(LOGGER, info_string_ + " has finished execution");
+    RCLCPP_DEBUG(LOGGER, "%s has finished execution", info_string_.c_str());
   }
 
   typename rclcpp_action::Server<ACTION_TYPE>::SharedPtr server_;
