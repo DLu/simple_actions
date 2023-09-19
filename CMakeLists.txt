@@ -31,6 +31,31 @@ if(BUILD_TESTING)
   ament_cppcheck()
   ament_flake8(MAX_LINE_LENGTH 120)
   ament_pep257()
+
+  find_package(ament_cmake_gtest REQUIRED)
+  find_package(ros_testing REQUIRED)
+  find_package(action_tutorials_interfaces REQUIRED)
+  ament_add_gtest_executable(${PROJECT_NAME}_utest test/smoke.cpp)
+  add_ros_test(test/smoke.test.py TIMEOUT 120)
+
+  ament_target_dependencies(${PROJECT_NAME}_utest
+    action_tutorials_interfaces
+    action_msgs
+    rclcpp
+    rclcpp_action
+  )
+  target_include_directories(${PROJECT_NAME}_utest PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
+
+  install(
+    TARGETS
+     ${PROJECT_NAME}_utest
+    ARCHIVE DESTINATION lib
+    LIBRARY DESTINATION lib
+    RUNTIME DESTINATION lib/${PROJECT_NAME}
+  )
 endif()
 
 install(DIRECTORY include/
