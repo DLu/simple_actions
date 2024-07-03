@@ -143,9 +143,8 @@ public:
   }
 
 protected:
-  void goalResponseCallback(std::shared_future<typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr> future)
+  void goalResponseCallback(typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr goal_handle)
   {
-    auto goal_handle = future.get();
     if (!goal_handle)
     {
       if (result_cb_)
