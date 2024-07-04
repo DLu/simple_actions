@@ -208,7 +208,7 @@ protected:
 
   typename rclcpp_action::Client<ACTION_TYPE>::SharedPtr client_;
   typename ACTION_TYPE::Result default_result_, execute_result_;
-  bool execute_result_recieved_;
+  bool execute_result_recieved_ = false;
   ResultCode latest_result_code_;
 
   FeedbackCallback feedback_cb_;
