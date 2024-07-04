@@ -49,6 +49,7 @@ TEST(Smoke, clientTest)
 {
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
   simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci", false);
+  EXPECT_FALSE(client.getLatestResultCode());
 }
 
 TEST(Smoke, serverTest)
