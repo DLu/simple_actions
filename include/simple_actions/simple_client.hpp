@@ -101,6 +101,14 @@ public:
   }
 
   /**
+   * @brief Waits for the server to come up. Will fail after the set timeout
+   */
+  bool waitForServer(std::chrono::duration<int64_t, std::milli> timeout)
+  {
+    return client_->wait_for_action_server(timeout);
+  }
+
+  /**
    * @brief Send a goal, and return immediately
    */
   void sendGoal(const typename ACTION_TYPE::Goal& goal_msg, ResultCallback resultCB = nullptr,

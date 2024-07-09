@@ -38,6 +38,7 @@
 #include <simple_actions/simple_client.hpp>
 #include <simple_actions/simple_server.hpp>
 #include <action_tutorials_interfaces/action/fibonacci.hpp>
+using namespace std::chrono_literals;
 
 bool execute(const action_tutorials_interfaces::action::Fibonacci::Goal&,
              action_tutorials_interfaces::action::Fibonacci::Result&)
@@ -49,6 +50,7 @@ TEST(Smoke, clientTest)
 {
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
   simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci", false);
+  EXPECT_FALSE(client.waitForServer(1s));
   EXPECT_FALSE(client.getLatestResultCode());
 }
 
