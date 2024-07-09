@@ -39,6 +39,7 @@
 #include <rclcpp/rclcpp.hpp>
 #include <rclcpp_action/rclcpp_action.hpp>
 #include <simple_actions/utilities.hpp>
+#include <optional>
 
 namespace simple_actions
 {
@@ -150,10 +151,14 @@ public:
     return execute_result_;
   }
 
-protected:
-  void goalResponseCallback(std::shared_future<typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr> future)
+  std::optional<ResultCode> getLatestResultCode() const
   {
-    auto goal_handle = future.get();
+    return execute_result_recieved_ ? std::optional(latest_result_code_) : std::nullopt;
+  }
+
+protected:
+  void goalResponseCallback(typename rclcpp_action::ClientGoalHandle<ACTION_TYPE>::SharedPtr goal_handle)
+  {
     if (!goal_handle)
     {
       if (result_cb_)
@@ -201,15 +206,17 @@ protected:
     }
   }
 
-  void executeResultCallback(ResultCode, const typename ACTION_TYPE::Result& result)
+  void executeResultCallback(ResultCode code, const typename ACTION_TYPE::Result& result)
   {
+    latest_result_code_ = code;
     execute_result_ = result;
     execute_result_recieved_ = true;
   }
 
   typename rclcpp_action::Client<ACTION_TYPE>::SharedPtr client_;
   typename ACTION_TYPE::Result default_result_, execute_result_;
-  bool execute_result_recieved_;
+  bool execute_result_recieved_ = false;
+  ResultCode latest_result_code_;
 
   FeedbackCallback feedback_cb_;
   ResultCallback result_cb_;
