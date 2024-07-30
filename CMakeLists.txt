@@ -25,26 +25,32 @@ find_package(rclpy REQUIRED)
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
   find_package(action_tutorials_interfaces REQUIRED)
-  ament_add_gtest(${PROJECT_NAME}_utest test/smoke.cpp)
+  ament_add_gtest(${PROJECT_NAME}_smoke_test test/smoke.cpp)
 
-  ament_target_dependencies(${PROJECT_NAME}_utest
+  ament_target_dependencies(${PROJECT_NAME}_smoke_test
     action_tutorials_interfaces
     action_msgs
     rclcpp
     rclcpp_action
   )
-  target_include_directories(${PROJECT_NAME}_utest PUBLIC
+  target_include_directories(${PROJECT_NAME}_smoke_test PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
   )
 
-  install(
-    TARGETS
-     ${PROJECT_NAME}_utest
-    ARCHIVE DESTINATION lib
-    LIBRARY DESTINATION lib
-    RUNTIME DESTINATION lib/${PROJECT_NAME}
+  ament_add_gtest(${PROJECT_NAME}_complex_test test/complex_setup.cpp)
+
+  ament_target_dependencies(${PROJECT_NAME}_complex_test
+    action_tutorials_interfaces
+    action_msgs
+    rclcpp
+    rclcpp_action
   )
+  target_include_directories(${PROJECT_NAME}_complex_test PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+  )
+
 endif()
 
 install(DIRECTORY include/

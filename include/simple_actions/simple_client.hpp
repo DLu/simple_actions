@@ -150,6 +150,11 @@ public:
       {
         rclcpp::spin_some(node_);
       }
+      else
+      {
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(10ms);
+      }
     }
     return execute_result_;
   }
