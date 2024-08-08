@@ -138,7 +138,7 @@ public:
    * @note: Does not return the ResultCode
    */
   typename ACTION_TYPE::Result& execute(const typename ACTION_TYPE::Goal& goal_msg,
-                                        FeedbackCallback feedbackCB = nullptr)
+                                        FeedbackCallback feedbackCB = nullptr, bool spin_locally = true)
   {
     using std::placeholders::_1;
     using std::placeholders::_2;
@@ -146,7 +146,15 @@ public:
     sendGoal(goal_msg, std::bind(&SimpleActionClient::executeResultCallback, this, _1, _2), feedbackCB);
     while (!execute_result_recieved_ && rclcpp::ok())
     {
-      rclcpp::spin_some(node_);
+      if (spin_locally)
+      {
+        rclcpp::spin_some(node_);
+      }
+      else
+      {
+        using namespace std::chrono_literals;
+        std::this_thread::sleep_for(10ms);
+      }
     }
     return execute_result_;
   }

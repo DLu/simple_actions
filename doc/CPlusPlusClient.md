@@ -181,3 +181,52 @@ By default, creating the `SimpleActionClient` will wait for the server to come u
     client.waitForServer();
     client.sendGoal(goal_msg);
 ```
+
+## Example with explicit Executor
+When you are working in a more complex codebase that has an explicit Executor object, `rclcpp::spin_some()` will not work.
+An easy way to tell this is by encountering the following exception:
+
+```
+C++ exception with description "Node '/XYZ' has already been added to an executor."
+```
+
+In this case, you can use the `spin_locally` flag in the `SimpleActionClient::execute()` function to avoid using the implicit executor.
+
+```cpp
+#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <simple_actions/simple_client.hpp>
+
+class MyComplexClass
+{
+  auto call_fibonacci()
+  {
+    auto goal_msg = ...
+    auto result = fibonacci_action_client_->execute(goal_msg, nullptr, false);
+  }
+
+  //...
+
+  std::shared_ptr<simple_actions::SimpleActionClient<Fibonacci>> fibonacci_action_client_;
+
+  rclcpp::executors::MultiThreadedExecutor executor_;
+  std::future<void> executor_future_handle_;
+};
+
+int main(int argc, char * argv[])
+{
+  rclcpp::init(argc, argv);
+  MyComplexClass complex_class;
+
+  rclcpp::executors::MultiThreadedExecutor executor;
+  executor.add_node(complex_class->getNode());
+
+  auto executor_future_handle = std::async(std::launch::async, [&]() -> void { executor_.spin(); });
+
+  auto result = complex_class.call_fibonacci();
+
+  // ...
+
+  rclcpp::shutdown();
+  return 0;
+}
+```
