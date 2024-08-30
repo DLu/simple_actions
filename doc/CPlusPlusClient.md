@@ -3,16 +3,16 @@
 ## Minimal Example
 Sends the goal, and ignores the result and the feedback
 ```cpp
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 #include <simple_actions/simple_client.hpp>
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
-  simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci");
+  simple_actions::SimpleActionClient<example_interfaces::action::Fibonacci> client(node, "fibonacci");
 
-  action_tutorials_interfaces::action::Fibonacci::Goal goal_msg;
+  example_interfaces::action::Fibonacci::Goal goal_msg;
   goal_msg.order = 10;
   client.sendGoal(goal_msg);
   rclcpp::shutdown();
@@ -24,16 +24,16 @@ int main(int argc, char * argv[])
 This example sends the goal and waits for the result.
 
 ```cpp
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 #include <simple_actions/simple_client.hpp>
 
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
-  simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci");
+  simple_actions::SimpleActionClient<example_interfaces::action::Fibonacci> client(node, "fibonacci");
 
-  action_tutorials_interfaces::action::Fibonacci::Goal goal_msg;
+  example_interfaces::action::Fibonacci::Goal goal_msg;
   goal_msg.order = 10;
   auto result = client.execute(goal_msg);
   for (const auto& n : result.sequence)
@@ -48,21 +48,21 @@ int main(int argc, char * argv[])
 ## Example with Callbacks
 This example uses custom callbacks for the result and feedback.
 ```cpp
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 #include <simple_actions/simple_client.hpp>
 
-void feedbackCallback(const action_tutorials_interfaces::action::Fibonacci::Feedback& feedback)
+void feedbackCallback(const example_interfaces::action::Fibonacci::Feedback& feedback)
 {
   std::stringstream ss;
   ss << "Next number in sequence received: ";
-  for (auto number : feedback.partial_sequence) {
+  for (auto number : feedback.sequence) {
     ss << number << " ";
   }
   std::cout << ss.str() << std::endl;
 }
 
 void resultCallback(simple_actions::ResultCode code,
-                    const action_tutorials_interfaces::action::Fibonacci::Result& result)
+                    const example_interfaces::action::Fibonacci::Result& result)
 {
   if (code == simple_actions::ResultCode::SUCCEEDED)
   {
@@ -85,9 +85,9 @@ int main(int argc, char * argv[])
   using namespace std::placeholders;
   rclcpp::init(argc, argv);
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
-  simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci");
+  simple_actions::SimpleActionClient<example_interfaces::action::Fibonacci> client(node, "fibonacci");
 
-  action_tutorials_interfaces::action::Fibonacci::Goal goal_msg;
+  example_interfaces::action::Fibonacci::Goal goal_msg;
   goal_msg.order = 10;
   client.sendGoal(goal_msg, std::bind(resultCallback, _1, _2), std::bind(feedbackCallback, _1));
   rclcpp::spin(node);
@@ -97,7 +97,7 @@ int main(int argc, char * argv[])
 
 ### Example With Class Callbacks
 ```cpp
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 #include <simple_actions/simple_client.hpp>
 
 class FibonacciActionClient
@@ -112,7 +112,7 @@ public:
   {
     using namespace std::placeholders;
 
-    auto goal_msg = action_tutorials_interfaces::action::Fibonacci::Goal();
+    auto goal_msg = example_interfaces::action::Fibonacci::Goal();
     goal_msg.order = 10;
 
     client_.sendGoal(goal_msg, std::bind(&FibonacciActionClient::resultCallback, this, _1, _2), std::bind(&FibonacciActionClient::feedbackCallback, this, _1));
@@ -120,20 +120,20 @@ public:
 
 private:
   rclcpp::Node::SharedPtr node_;
-  simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client_;
+  simple_actions::SimpleActionClient<example_interfaces::action::Fibonacci> client_;
 
-  void feedbackCallback(const action_tutorials_interfaces::action::Fibonacci::Feedback& feedback)
+  void feedbackCallback(const example_interfaces::action::Fibonacci::Feedback& feedback)
   {
     std::stringstream ss;
     ss << "Next number in sequence received: ";
-    for (auto number : feedback.partial_sequence) {
+    for (auto number : feedback.sequence) {
       ss << number << " ";
     }
     RCLCPP_INFO(node_->get_logger(), ss.str().c_str());
   }
 
   void resultCallback(simple_actions::ResultCode code,
-                       const action_tutorials_interfaces::action::Fibonacci::Result & result)
+                       const example_interfaces::action::Fibonacci::Result & result)
   {
     if (code == simple_actions::ResultCode::SUCCEEDED)
     {
@@ -175,7 +175,7 @@ You can also specify a feedback callback with the call operator, a la
 By default, creating the `SimpleActionClient` will wait for the server to come up. You can disable that by passing in `wait_for_server=False` and then calling `waitForServer()` later.
 
 ```cpp
-    simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci", false);
+    simple_actions::SimpleActionClient<example_interfaces::action::Fibonacci> client(node, "fibonacci", false);
 
     # Do something else
     client.waitForServer();
@@ -193,7 +193,7 @@ C++ exception with description "Node '/XYZ' has already been added to an executo
 In this case, you can use the `spin_locally` flag in the `SimpleActionClient::execute()` function to avoid using the implicit executor.
 
 ```cpp
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 #include <simple_actions/simple_client.hpp>
 
 class MyComplexClass

@@ -37,12 +37,12 @@
 #include <gtest/gtest.h>
 #include <simple_actions/simple_client.hpp>
 #include <simple_actions/simple_server.hpp>
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 #include <simple_actions/simple_client.hpp>
 
-using Fibonacci = action_tutorials_interfaces::action::Fibonacci;
+using Fibonacci = example_interfaces::action::Fibonacci;
 
 class TestComplexSetup : public ::testing::Test
 {

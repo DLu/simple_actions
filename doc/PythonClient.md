@@ -6,7 +6,7 @@ Sends the goal, and ignores the result and the feedback
 import rclpy
 from rclpy.node import Node
 from simple_actions import SimpleActionClient
-from action_tutorials_interfaces.action import Fibonacci
+from example_interfaces.action import Fibonacci
 
 
 def main(args=None):
@@ -29,7 +29,7 @@ This example sends the goal and waits for the result.
 import rclpy
 from rclpy.node import Node
 from simple_actions import SimpleActionClient
-from action_tutorials_interfaces.action import Fibonacci
+from example_interfaces.action import Fibonacci
 
 
 def main(args=None):
@@ -53,11 +53,11 @@ This example uses custom callbacks for the result and feedback.
 import rclpy
 from rclpy.node import Node
 from simple_actions import SimpleActionClient
-from action_tutorials_interfaces.action import Fibonacci
+from example_interfaces.action import Fibonacci
 
 
 def my_awesome_feedback_cb(feedback):
-    print(f'Feedback: {feedback.partial_sequence}')
+    print(f'Feedback: {feedback.sequence}')
 
 
 def my_awesome_result_cb(result_code, result):
