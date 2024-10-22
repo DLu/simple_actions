@@ -24,12 +24,12 @@ find_package(rclpy REQUIRED)
 
 if(BUILD_TESTING)
   find_package(ament_cmake_gtest REQUIRED)
-  find_package(action_tutorials_interfaces REQUIRED)
+  find_package(example_interfaces REQUIRED)
   ament_add_gtest(${PROJECT_NAME}_smoke_test test/smoke.cpp)
 
   ament_target_dependencies(${PROJECT_NAME}_smoke_test
-    action_tutorials_interfaces
     action_msgs
+    example_interfaces
     rclcpp
     rclcpp_action
   )
@@ -41,8 +41,8 @@ if(BUILD_TESTING)
   ament_add_gtest(${PROJECT_NAME}_complex_test test/complex_setup.cpp)
 
   ament_target_dependencies(${PROJECT_NAME}_complex_test
-    action_tutorials_interfaces
     action_msgs
+    example_interfaces
     rclcpp
     rclcpp_action
   )

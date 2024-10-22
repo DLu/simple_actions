@@ -37,11 +37,11 @@
 #include <gtest/gtest.h>
 #include <simple_actions/simple_client.hpp>
 #include <simple_actions/simple_server.hpp>
-#include <action_tutorials_interfaces/action/fibonacci.hpp>
+#include <example_interfaces/action/fibonacci.hpp>
 using namespace std::chrono_literals;
 
-bool execute(const action_tutorials_interfaces::action::Fibonacci::Goal&,
-             action_tutorials_interfaces::action::Fibonacci::Result&)
+bool execute(const example_interfaces::action::Fibonacci::Goal&,
+             example_interfaces::action::Fibonacci::Result&)
 {
   return false;
 }
@@ -49,7 +49,7 @@ bool execute(const action_tutorials_interfaces::action::Fibonacci::Goal&,
 TEST(Smoke, clientTest)
 {
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("client_demo");
-  simple_actions::SimpleActionClient<action_tutorials_interfaces::action::Fibonacci> client(node, "fibonacci", false);
+  simple_actions::SimpleActionClient<example_interfaces::action::Fibonacci> client(node, "fibonacci", false);
   EXPECT_FALSE(client.waitForServer(1s));
   EXPECT_FALSE(client.getLatestResultCode());
 }
@@ -57,7 +57,7 @@ TEST(Smoke, clientTest)
 TEST(Smoke, serverTest)
 {
   rclcpp::Node::SharedPtr node = std::make_shared<rclcpp::Node>("server_demo");
-  simple_actions::SimpleActionServer<action_tutorials_interfaces::action::Fibonacci> server(
+  simple_actions::SimpleActionServer<example_interfaces::action::Fibonacci> server(
       node, "fibonacci", std::bind(&execute, std::placeholders::_1, std::placeholders::_2));
 }
 

@@ -8,7 +8,7 @@ import time
 import rclpy
 from rclpy.node import Node
 from simple_actions import SimpleActionServer
-from action_tutorials_interfaces.action import Fibonacci
+from example_interfaces.action import Fibonacci
 
 
 def fibonacci_action(goal):
@@ -43,7 +43,7 @@ import time
 import rclpy
 from rclpy.node import Node
 from simple_actions import SimpleActionServer
-from action_tutorials_interfaces.action import Fibonacci
+from example_interfaces.action import Fibonacci
 
 
 class FibonacciServer:
@@ -52,16 +52,16 @@ class FibonacciServer:
 
     def fibonacci_action(self, goal):
         feedback_msg = Fibonacci.Feedback()
-        feedback_msg.partial_sequence = [0, 1]
+        feedback_msg.sequence = [0, 1]
 
         for i in range(1, goal.order):
-            feedback_msg.partial_sequence.append(
-                feedback_msg.partial_sequence[i] + feedback_msg.partial_sequence[i - 1])
+            feedback_msg.sequence.append(
+                feedback_msg.sequence[i] + feedback_msg.sequence[i - 1])
             self.action_server.publish_feedback(feedback_msg)
             time.sleep(1.0)
 
         result = Fibonacci.Result()
-        result.sequence = feedback_msg.partial_sequence
+        result.sequence = feedback_msg.sequence
         return result
 
 
