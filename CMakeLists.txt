@@ -27,11 +27,11 @@ if(BUILD_TESTING)
   find_package(example_interfaces REQUIRED)
   ament_add_gtest(${PROJECT_NAME}_smoke_test test/smoke.cpp)
 
-  ament_target_dependencies(${PROJECT_NAME}_smoke_test
-    action_msgs
-    example_interfaces
-    rclcpp
-    rclcpp_action
+  target_link_libraries(simple_actions_smoke_test
+    ${action_msgs_TARGETS}
+    ${example_interfaces_TARGETS}
+    rclcpp::rclcpp
+    rclcpp_action::rclcpp_action
   )
   target_include_directories(${PROJECT_NAME}_smoke_test PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -40,11 +40,11 @@ if(BUILD_TESTING)
 
   ament_add_gtest(${PROJECT_NAME}_complex_test test/complex_setup.cpp)
 
-  ament_target_dependencies(${PROJECT_NAME}_complex_test
-    action_msgs
-    example_interfaces
-    rclcpp
-    rclcpp_action
+  target_link_libraries(${PROJECT_NAME}_complex_test
+    ${action_msgs_TARGETS}
+    ${example_interfaces_TARGETS}
+    rclcpp::rclcpp
+    rclcpp_action::rclcpp_action
   )
   target_include_directories(${PROJECT_NAME}_complex_test PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
