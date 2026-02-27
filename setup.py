@@ -13,7 +13,7 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='David V. Lu!!',
-    maintainer_email='davidvlu@gmail.com',
+    maintainer_email='david@metrorobots.com',
     description='Simple library for using the `rclpy/rclcpp` action libraries',
     license='BSD',
 )
